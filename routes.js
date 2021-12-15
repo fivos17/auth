@@ -1,13 +1,15 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt')
 
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+};
+
 module.exports = function (app, myDataBase) {
-    function ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
-        }
-        res.redirect('/');
-    };
+
     app.route('/').get((req, res) => {
         res.render('pug', { title: 'Connected to database', message: 'Please login brah', showLogin: true, showRegistration: true, showSocialAuth: true });
     });
@@ -58,5 +60,11 @@ module.exports = function (app, myDataBase) {
                 res.redirect('/profile');
             }
         );
+
+    app.use((req, res, next) => {
+        res.status(404)
+            .type('text')
+            .send('Not Found');
+    });
 
 }
