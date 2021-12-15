@@ -1,5 +1,5 @@
 const passport = require('passport');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
